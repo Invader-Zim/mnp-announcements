@@ -1,0 +1,27 @@
+<div>
+
+<h1>Individual Player Ratings</h1>
+
+<p>MNP uses Individual Player Ratings (IPR) to track the strength of each player, and more importantly to track and balance team strength. The Team Rating is simply the sum of IPR of all players on that team's roster. An adjusted Team Rating may exist on any specific night when roster players are absent and subs are used. Refer to the Team Roster and Substitute rules for more details on adjusting players on the team.</p>
+<p>This page provides the details on the calculation of IPR.</p>
+<p>IPR sources two databases of competitive results, namely the IFPA World Rankings, and the Matchplay.events Ratings (MPR). IPR expands uses the IFPA world rankings to mainly track players participating in IFPA-sanctioned tournaments. It is a ranking system and not a rating system, thus you can only go up the more you play, and go down by playing less, not by being outclassed. MPR provides a more accurate rating by considering head-to-head data from more events, including Monday Night Pinball matches themselves. IPR is primarily based on MPR, but uses the IFPA as backup as some players only play in leagues and tournaments that don't use MPR, and thus it provides a backup for identifying world class players who choose to play in MNP, either as a roster player or sub.</p>
+<p>MPR uses the Glicko algorithm that starts every player at 1500, and increases their rating as they win more, or decreased it as they lose more. A Ratings Deviation (RD) specifies the presumed accuracy of the rating, and can range between 125 (not accurate at all) and 30 (as accurate as the algorithm expects to be). </p>
+<p>The MPR Lower Bound (MPLB) is computed as a player's rating minus 2x the lower bound. Thus the lower bound for a new player starts at 1500-250 = 1250. For a player with a rating of 1550, and RD of 30, their lower bound would be 1550-2*30 = 1490. It is this lower bound that is used in the computation of IPR.</p>
+<p>MNP retrieves the data from both IFPA and MPR multiple times per season. Usually once the week before season starts, at the midpoint of the regular season, and prior to playoffs starting. Different update times are possible, and usually announced by the General Commission in the MNP Captains Group at least one week prior. When MNP retrieves the data, it produces a current list of all roster players and anyone who has subbed either the prior or current season. For each player, it computes an IPR. Once that is done, the IPR for the player is frozen until the next data retrieval update, even if the player's MPLB or IFPA changes shortly after the update. For players new to MNP, the MNP Search Engine will retrieve that player's IFPA and MPR data on first search, and save it to a local database for use until the next IPR update.</p>
+<p>Analytically, it's been determined that the distribution of MPLB across the entire league is appromixately a Log-Normal distribution, as illustrated below. The IPR itself is a value between 1 and 6, as illustrated in the following diagram, that maps that distribution such that the lowest 30% of players have an IPR=1, the next 20% have an IPR=2. IPRs 3, 4, and 5 are 15% each, then finally an IPR=6 is the top 5% of the players in the league. Thus IPR 1 and 2 are below the rating of the median player, and IPRs 3 through 6 are above the median.</p>
+<br/>
+    
+<img width=835 height=643
+src="/player_rating_distribution.png" v:shapes="Picture_x0020_1"><![endif]></span></p>
+
+<br/>
+<p>The MPLB is the primary assignment of IPR. However, if a player's IFPA ranking maps to a higher IPR value, then that higher value will be assigned to the player. The use of IFPA ranking is because most major tournaments, including NWPC, NWPAS, Pinburgh, and tournaments in other cities do not currently have their data submitted to MPR. Rather, MPR data primarily consists of the many local weekly and monthly tournaments in the Seattle area. The continued use of IFPA ranking data in this way ensures that a player who typically only plays in the larger IFPA-ranked tournaments, and has demonstrated a high level of performance those tournaments, will still be assigned an appropriate IPR, and won't show up as a 1 or 2 and appearing as a novice due to lack of MPR data. For the majority of players who play locally more than they play in the major tournaments, the MPR will be more accurate, and thus that will tend to provide the basis for the IPR.</p>
+<p>The currently active MNP roster players across the league are used as the statistically representative sample to dynamically produce the MPLB thresholds. Any other player is then mapped to an IPR using those thresholds. The exact thresholds being used at any given time are shown at the base of the MNP Player Lookup. </p>
+<h2>Technical References:</h2>
+<ul>
+    <li>Glicko algorithm used by matchplay: <a href="http://www.glicko.net/glicko/glicko.pdf">http://www.glicko.net/glicko/glicko.pdf</a></li>
+    <li>MP implementation of Glicko (read only): <a href="https://github.com/haugstrup/TournamentUtils/blob/master/src/GlickoCalculator.php">https://github.com/haugstrup/TournamentUtils/blob/master/src/GlickoCalculator.php</a> </li>
+    <li>IFPA Ranking Information and Computation: <a href="https://www.ifpapinball.com/menu/ranking-info">https://www.ifpapinball.com/menu/ranking-info</a></li>
+</ul>
+
+</div>
